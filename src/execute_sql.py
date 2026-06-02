@@ -11,6 +11,8 @@ def execute_sql(connexion, file_path):
 
     if not os.path.exists(file_path):
         print(f"Erreur : le chemin : {file_path}  est inccorect ")
+        return False
+    
     with open(file_path, 'r', encoding = 'utf-8') as f :
         query = f.read()
         try :
