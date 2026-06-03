@@ -76,8 +76,21 @@ SELECT
     customer_city,
     customer_state
 FROM raw.olist_customers;
+-- 6. Nettoyage et insertion des Commandes (Gestion des Dates !)
+INSERT INTO silver.olist_orders 
+SELECT 
+    order_id,
+    customer_id,
+    order_status,
+    -- NULLIF('' , '') transforme une chaîne de texte vide de notre CSV en un vrai NULL SQL
+    CAST(NULLIF(order_purchase_timestamp, '') AS TIMESTAMP),
+    CAST(NULLIF(order_approved_at, '') AS TIMESTAMP),
+    CAST(NULLIF(order_delivered_carrier_date, '') AS TIMESTAMP),
+    CAST(NULLIF(order_delivered_customer_date, '') AS TIMESTAMP),
+    CAST(NULLIF(order_estimated_delivery_date, '') AS TIMESTAMP)
+FROM raw.olist_orders;
 
--- 6. Nettoyage et insertion des Produits (Gestion des NULLs !)
+-- 7. Nettoyage et insertion des Produits (Gestion des NULLs !)
 INSERT INTO silver.olist_products 
 SELECT 
     product_id,
@@ -91,19 +104,7 @@ SELECT
     CAST(COALESCE(product_width_cm, '0') AS INT)
 FROM raw.olist_products;
 
--- 7. Nettoyage et insertion des Commandes (Gestion des Dates !)
-INSERT INTO silver.olist_orders 
-SELECT 
-    order_id,
-    customer_id,
-    order_status,
-    -- NULLIF('' , '') transforme une chaîne de texte vide de notre CSV en un vrai NULL SQL
-    CAST(NULLIF(order_purchase_timestamp, '') AS TIMESTAMP),
-    CAST(NULLIF(order_approved_at, '') AS TIMESTAMP),
-    CAST(NULLIF(order_delivered_carrier_date, '') AS TIMESTAMP),
-    CAST(NULLIF(order_delivered_customer_date, '') AS TIMESTAMP),
-    CAST(NULLIF(order_estimated_delivery_date, '') AS TIMESTAMP)
-FROM raw.olist_orders;
+
 
 -- 8. Nettoyage et insertion des Articles commandés
 INSERT INTO silver.olist_order_items 

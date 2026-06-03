@@ -13,8 +13,7 @@ def load(connexion,table_name, file_path):
     if not  os.path.exists(file_path): 
         print(f"le chmein : {file_path} est introuvable")
         return False
-    with open(file_path, 'r', encoding='utf-8') as f :
-        next(f)
+    with open(file_path, 'r', encoding='utf-8-sig') as f :
         try :
             cur = connexion.cursor()
             print(f"Instertion des données dans {table_name} depuis {file_path} est en cours...")

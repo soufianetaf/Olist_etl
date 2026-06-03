@@ -22,6 +22,15 @@ def extract():
     load(connexion, "raw.olist_orders", "../data/olist_orders_dataset.csv")
     load(connexion, "raw.olist_order_items", "../data/olist_order_items_dataset.csv")
 
+def transform():
+    """
+    Phase 2 : Transoformation : raw -> silver
+    Transformer les types des donnes , manipuler les donnees manquantes et  les duplicates
+    """
+    print("02- Début de la partie de la transformation (création + insertion)")
+    #creation des tables de shema silver et fait les transformation
+    execute_sql(connexion,"../sql/03_transform_staging.sql")
+
 def orchestractor():
     """Le chef d'orchestre de notre ETL"""
     print(" Début de notre pipeline ETL...")
@@ -33,6 +42,9 @@ def orchestractor():
 
     # Lancement de la phase d'extraction
     extract()
+
+    # Lancement de la phase de transformation
+    transform()
     
     # Fermeture propre de la connexion à la fin
     connexion.close()
