@@ -12,10 +12,10 @@ def get_connexion():
 
     try :
         conn = psycopg2.connect(
-            host=os.getenv("db_host"),
-            database = os.getenv("db_name"),
-            user= os.getenv("dv_user"),
-            password = os.getenv("db_password")
+            host=os.getenv("DB_HOST"),
+            database = os.getenv("DB_NAME"),
+            user= os.getenv("DB_USER"),
+            password = os.getenv("DB_PASS")
         )
 
         print("Connexion a la base de données est reussie.")

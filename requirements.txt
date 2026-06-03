@@ -1,0 +1,3 @@
+os
+pyscopg2
+dotenv
