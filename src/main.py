@@ -27,9 +27,18 @@ def transform():
     Phase 2 : Transoformation : raw -> silver
     Transformer les types des donnes , manipuler les donnees manquantes et  les duplicates
     """
-    print("02- Début de la partie de la transformation (création + insertion)")
+    print("Etape 3 : Début de la partie de la transformation (création + insertion)")
     #creation des tables de shema silver et fait les transformation
     execute_sql(connexion,"../sql/03_transform_staging.sql")
+
+def load_dwh():
+    """
+    Phase 3 : charger les données dans notre dwh
+    creer le schema en etoile et inserer les donnees depuis silver
+    """
+
+    print("Etape 04 : Début de la partie du chargement")
+    execute_sql(connexion,"../sql/04_build_dwh.sql")
 
 def orchestractor():
     """Le chef d'orchestre de notre ETL"""
@@ -43,9 +52,10 @@ def orchestractor():
     # Lancement de la phase d'extraction
     extract()
 
-    # Lancement de la phase de transformation
+    # Lancement de la phase de  la transformation
     transform()
-    
+    # Lancement de la phase du chargement
+    load_dwh()
     # Fermeture propre de la connexion à la fin
     connexion.close()
     print("\n Pipeline ETL terminé et connexion fermée.")
